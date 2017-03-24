@@ -17,17 +17,27 @@ doubleEllp::EllpCurve->(Integer,Integer)->Integer->Maybe (Integer,Integer)
 doubleEllp e (x1, y1) p = addEllP e (x1,y1) (x1,y1) p
 
 nthMultEllp::EllpCurve->(Integer,Integer)->Integer->Integer->Maybe (Integer,Integer)
-nthMultEllp curve (x1,y1) n p = let 
-                                            p2 = fromJust (doubleEllp curve (x1,y1) p)
-                                           in 
-                                            nthMultEllp' curve p2 (x1,y1) (n-1) p
+nthMultEllp curve point n p = let 
+                                    p2 = fromJust (doubleEllp curve point p)
+                                in 
+                                    nthMultEllp' curve p2 point (n-1) p
 nthMultEllp' curve (accX,accY) (x1,y1) n p | n == 1 = Just (accX,accY)
                                                      | otherwise = let 
                                                                     (x2,y2) = fromJust (addEllP curve (accX,accY) (x1,y1) p)
                                                                    in
                                                                     nthMultEllp' curve (x2,y2) (x1,y1) (n-1) p
+
+
+--input elliptic curve, two points p, q , integer field value m
+--output n such that n.p = q
+divEllp::EllpCurve->(Integer,Integer)->(Integer,Integer)->Integer->Integer
+divEllp curve p q m = divEllp' curve p q m 1
+divEllp' curve p q m n | p==q = n
+                       | otherwise = let 
+                                        np = nthMultEllp curve p
+                                        divEllp' curve p 
 pointInCurve::EllpCurve->(Integer,Integer)->Integer->Bool
-pointInCurve (EllpCurve a b) (x,y) p = (modPow y 2 p) ==positiveConvMod ((modPow x 3 p) + (modMult a x p) + (positiveConvMod b p)) p
+pointInCurve (EllpCurve a b) (x,y) p = (modPow y 2 p) == positiveConvMod ((modPow x 3 p) + (modMult a x p) + (positiveConvMod b p)) p
 
 
 modMult::Integer->Integer->Integer->Integer
