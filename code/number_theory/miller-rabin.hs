@@ -26,7 +26,7 @@ mrPrime' n r bi | r==0 = if (bi == n-1) then
 factorOut2::Integer->(Integer,Integer)
 factorOut2 n = factorOut2' n 0
 factorOut2'::Integer->Integer->(Integer,Integer)
-factorOut2' d r | (mod n 2) == 0 = (factorOut2' (quot d 2) (r+1)) 
+factorOut2' d r | (mod d 2) == 0 = (factorOut2' (quot d 2) (r+1)) 
               | otherwise = (r,d)
 
 --Modular exponentiation (x^y mod m)

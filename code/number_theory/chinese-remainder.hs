@@ -32,6 +32,7 @@ gcdiv m n | n ==0 = m
 
 positiveConvMod::Integer->Integer->Integer
 positiveConvMod n m | n<0 = positiveConvMod (n+m) m
+                    | n>m = positiveConvMod (n-m) m
                     | otherwise = n
 
 modMult::Integer->Integer->Integer->Integer
