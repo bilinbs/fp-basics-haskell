@@ -1,0 +1,57 @@
+> addEllP (EllpCurve (-5) 8) (4,9) (10,1) 29
+Just (20,22)
+
+> nthMultEllp (EllpCurve (-5) 8) (4,9) 2 29
+Just (8,4)
+
+P= (4,9) Q=(10,1)
+2P = (8,4)
+3P = (24,16)
+4P =
+5P = 
+6P = 
+7P = 
+8P = 
+9P = 
+10P = 
+11P = 
+12P = 
+13P = 
+
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 2 29
+Just (8,4)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 3 29
+Just (24,16)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 4 29
+Just (17,14)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 5 29
+Just (3,7)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 6 29
+Just (26,5)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 7 29
+Just (23,5)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 8 29
+Just (1,27)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 9 29
+Just (2,8)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 10 29
+Just (16,14)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 11 29
+Just (13,9)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 12 29
+Just (12,20)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 13 29
+Just (9,24)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 14 29
+Just (25,15)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 15 29
+Just (6,7)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 16 29
+Just (20,7)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 17 29
+Just (10,28)
+*Main> nthMultEllp (EllpCurve (-5) 8) (4,9) 18 29
+Just (21,0)
+nthMultEllp (EllpCurve (-5) 8) (4,9) 19 29
+Just (10,1)
+
