@@ -34,8 +34,9 @@ divEllp::EllpCurve->(Integer,Integer)->(Integer,Integer)->Integer->Integer
 divEllp curve p q m = divEllp' curve p q m 1
 divEllp' curve p q m n | p==q = n
                        | otherwise = let 
-                                        np = nthMultEllp curve p
-                                        divEllp' curve p 
+                                        np = nthMultEllp curve p (n+1) m
+                                     in
+                                        divEllp' curve p q m (n+1) 
 pointInCurve::EllpCurve->(Integer,Integer)->Integer->Bool
 pointInCurve (EllpCurve a b) (x,y) p = (modPow y 2 p) == positiveConvMod ((modPow x 3 p) + (modMult a x p) + (positiveConvMod b p)) p
 
