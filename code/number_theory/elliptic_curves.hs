@@ -38,12 +38,15 @@ nthMultEllp' curve (accX,accY) (x1,y1) n p
 --input elliptic curve, two points p, q , integer field value m
 --output n such that n.p = q
 divEllp::EllpCurve->(Integer,Integer)->(Integer,Integer)->Integer->Integer
-divEllp curve p q m = divEllp' curve p q m 1
-divEllp' curve p q m n | p==q = n
-                       | otherwise = let 
-                                        np = nthMultEllp curve p (n+1) m
-                                     in
-                                        divEllp' curve p q m (n+1) 
+divEllp curve p q m = divEllp' curve p q m 2
+divEllp' curve p q m n = let 
+                            np = fromJust (nthMultEllp curve p n m)
+                         in
+                            if np == q then
+                                n
+                            else
+                                divEllp' curve p q m (n+1) 
+
 pointInCurve::EllpCurve->(Integer,Integer)->Integer->Bool
 pointInCurve (EllpCurve a b) (x,y) p = 
     (modPow y 2 p) == positiveConvMod ((modPow x 3 p) + 
