@@ -46,33 +46,42 @@ divEllp' curve p q m n = let
                             else
                                 divEllp' curve p q m (n+1) 
 
+--checks whether a given point is in the curve
 pointInCurve::EllpCurve->Point->Integer->Bool
 pointInCurve (EllpCurve a b) (Point x y) p = 
     (modPow y 2 p) == positiveConvMod ((modPow x 3 p) + 
         (modMult a x p) + (positiveConvMod b p)) p
 
-
-modMult::Integer->Integer->Integer->Integer
-modMult x y m = (x * y) `mod` m
-
 --Modular exponentiation (x^y mod m)
 --modPow x y m
 modPow::Integer->Integer->Integer->Integer
-modPow x y m = mod (x ^ y) m
+modPow x y m | y == 1          = mod x m
+             | (mod y 2) == 0  = modPow (mod (x^2) m) (quot y 2) m
+             | otherwise       = modMult x  (modPow x (y-1) m) m
+
+--Modular multiplication (x*y mod m)
+--modMult x y m
+modMult::Integer->Integer->Integer->Integer
+modMult x y m | y == 1         = mod x m
+              | (mod y 2) == 0 = modMult (mod (x*2) m) (quot y 2) m
+              | otherwise      = mod (x + (modMult x (y-1) m)) m
 
 --input: n m
 --output n^-1 (mod m)
 inverse::Integer->Integer->Integer
-inverse n m = inverse' n (m-1) m
-
-inverse' n x m | (modMult n x m) == 1 = x
-               | otherwise = (inverse' n (x-1) m)
-
+inverse a n = positiveConvMod (inverse' 0 n 1 a) n
+inverse' t r nt nr | nr == 0 = t
+                   | otherwise = let
+                                    quotient = quot r nr
+                                   in
+                                    inverse' nt nr (t - quotient * nt) (r - quotient * nr)
+--convert negative numbers to positive in mod m world
 positiveConvMod::Integer->Integer->Integer
 positiveConvMod n m | n<0 = positiveConvMod (n+m) m
                     | n>=m = positiveConvMod (n-m) m
                     | otherwise = n
 
+--data types
 data EllpCurve = EllpCurve Integer Integer
 instance Show EllpCurve where
     show (EllpCurve a b) = "y^2 = x^3 " ++ (signStr a) ++ 
