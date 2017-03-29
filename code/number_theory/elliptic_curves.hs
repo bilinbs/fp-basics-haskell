@@ -1,5 +1,6 @@
 import Data.Maybe
 
+--point addtion in elliptic curves
 addEllP::EllpCurve->Point->Point->Integer->Point
 addEllP curve point NullPoint _ = point
 addEllP curve NullPoint point _ = point 
@@ -16,10 +17,11 @@ addEllP (EllpCurve a b) (Point x1 y1) (Point x2 y2) p
                                 in
                                     (Point x3 y3)                                                    
                   
-
+--point doubling in elliptic curves
 doubleEllp::EllpCurve->Point->Integer->Point
 doubleEllp e point p = addEllP e point point p
 
+--nth multiple ofa point in ellptic curves
 nthMultEllp::EllpCurve->Point->Integer->Integer->Point
 nthMultEllp curve point n p = let 
                                     p2 = (doubleEllp curve point p)
