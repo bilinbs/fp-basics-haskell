@@ -32,7 +32,14 @@ factorOut2' d r | (mod d 2) == 0 = (factorOut2' (quot d 2) (r+1))
 --Modular exponentiation (x^y mod m)
 --modPow x y m
 modPow::Integer->Integer->Integer->Integer
-modPow x y m = mod (x ^ y) m
+modPow x y m | y == 1 = mod x m
+             | (mod y 2) == 0  = modPow (mod (x^2) m) (quot y 2) m
+             | otherwise = modMult x  (modPow x (y-1) m) m
+
+--Modular multiplication (x*y mod m)
+--modPow x y m
+modMult::Integer->Integer->Integer->Integer
+modMult x y m = mod (x*y) m
 
 data Primality = Composite | ProbablyPrime
                     deriving Show 
