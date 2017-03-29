@@ -27,19 +27,21 @@ factorOut2::Integer->(Integer,Integer)
 factorOut2 n = factorOut2' n 0
 factorOut2'::Integer->Integer->(Integer,Integer)
 factorOut2' d r | (mod d 2) == 0 = (factorOut2' (quot d 2) (r+1)) 
-              | otherwise = (r,d)
+                | otherwise      = (r,d)
 
 --Modular exponentiation (x^y mod m)
 --modPow x y m
 modPow::Integer->Integer->Integer->Integer
-modPow x y m | y == 1 = mod x m
+modPow x y m | y == 1          = mod x m
              | (mod y 2) == 0  = modPow (mod (x^2) m) (quot y 2) m
-             | otherwise = modMult x  (modPow x (y-1) m) m
+             | otherwise       = modMult x  (modPow x (y-1) m) m
 
 --Modular multiplication (x*y mod m)
---modPow x y m
+--modMult x y m
 modMult::Integer->Integer->Integer->Integer
-modMult x y m = mod (x*y) m
+modMult x y m | y == 1         = mod x m
+              | (mod y 2) == 0 = modMult (mod (x*2) m) (quot y 2) m
+              | otherwise      = mod (x + (modMult x (y-1) m)) m
 
 data Primality = Composite | ProbablyPrime
                     deriving Show 

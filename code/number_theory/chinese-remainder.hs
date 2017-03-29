@@ -26,8 +26,8 @@ solveCongruence (a,m) (b,n) | (gcdiv m n) /= 1 = Nothing
 
 
 gcdiv::Integer->Integer->Integer
-gcdiv m n | n ==0 = m
-        | otherwise = gcdiv n (mod m n)
+gcdiv m n | n ==0     = m
+          | otherwise = gcdiv n (mod m n)
 
 
 positiveConvMod::Integer->Integer->Integer
@@ -35,13 +35,21 @@ positiveConvMod n m | n<0 = positiveConvMod (n+m) m
                     | n>m = positiveConvMod (n-m) m
                     | otherwise = n
 
+--Modular multiplication (x*y mod m)
+--modMult x y m
 modMult::Integer->Integer->Integer->Integer
-modMult x y m = mod (x*y) m
+modMult x y m | y == 1         = mod x m
+              | (mod y 2) == 0 = modMult (mod (x*2) m) (quot y 2) m
+              | otherwise      = mod (x + (modMult x (y-1) m)) m
 
 --input: n m
 --output n^-1 (mod m)
 inverse::Integer->Integer->Integer
-inverse n m = inverse' n (m-1) m
+inverse a n = positiveConvMod (inverse' 0 n 1 a) n
+inverse' t r nt nr | nr == 0 = t
+                   | otherwise = let
+                                    quotient = quot r nr
+                                   in
+                                    inverse' nt nr (t - quotient * nt) (r - quotient * nr)
 
-inverse' n x m | (modMult n x m) == 1 = x
-               | otherwise = (inverse' n (x-1) m)
+
