@@ -24,12 +24,14 @@ solveCongruence (a,m) (b,n) | (gcdiv m n) /= 1 = Nothing
                                             Just (x,mn)
 
 
-
+--gratest commond divisor
+--gcdiv m n 
 gcdiv::Integer->Integer->Integer
 gcdiv m n | n ==0     = m
           | otherwise = gcdiv n (mod m n)
 
 
+--convert negative numbers to positive in mod m world
 positiveConvMod::Integer->Integer->Integer
 positiveConvMod n m | n<0 = positiveConvMod (n+m) m
                     | n>m = positiveConvMod (n-m) m
@@ -38,7 +40,8 @@ positiveConvMod n m | n<0 = positiveConvMod (n+m) m
 --Modular multiplication (x*y mod m)
 --modMult x y m
 modMult::Integer->Integer->Integer->Integer
-modMult x y m | y == 1         = mod x m
+modMult x y m | x < 0 || y < 0 = modMult (positiveConvMod x m) (positiveConvMod y m) m
+              | y <= 1         = mod (x*y) m
               | (mod y 2) == 0 = modMult (mod (x*2) m) (quot y 2) m
               | otherwise      = mod (x + (modMult x (y-1) m)) m
 
